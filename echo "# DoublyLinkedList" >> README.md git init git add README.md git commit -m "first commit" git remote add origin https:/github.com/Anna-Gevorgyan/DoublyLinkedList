@@ -1,0 +1,146 @@
+#pragma once
+class  DoublyLinkedList
+{
+    public:
+	struct Node
+	{
+		int value;
+		Node *next;
+		Node *previous;
+
+		Node(int nval)
+		{
+			value = nval;
+			next = nullptr;
+			previous = nullptr;
+		}
+	};
+
+	DoublyLinkedList()
+	{
+		head = tail = nullptr;
+		size = 0;
+	}
+
+	bool is_empty()
+	{
+		return size == 0;
+	}
+
+	int Size()
+	{
+		return size;
+	}
+
+	void push_front(int nval)
+	{
+		Node *temp = new Node(nval);
+		temp->next = head;
+		head = temp;
+		temp->previous = nullptr;
+		if (tail == nullptr)
+		{
+			tail = temp;
+		}
+		++size;
+	}
+
+	void pop_front()
+	{
+		if (is_empty)
+		{
+			return;
+		}
+		Node *temp = head;
+		head = head->next;
+		delete temp;
+		if (head == nullptr)
+		{
+			tail == nullptr;
+		}
+		head->previous = nullptr;
+		--size;
+	}
+
+	void push_back(int nval)
+	{
+		Node *temp = new Node(nval);
+		if (tail == nullptr)
+		{
+			tail = temp;
+			head = temp;
+		}
+		else
+		{
+			tail->next = temp;
+			tail = temp;
+			tail->next = nullptr;
+		}
+		++size;
+	}
+
+	void pop_back()
+	{
+		if (is_empty)
+		{
+			return;
+		}
+		if (tail == head )
+		{
+			delete tail;
+			tail = nullptr;
+			head = nullptr;
+			--size;
+			return;
+		}
+		Node *temp = tail;
+		tail = tail->previous;
+		delete temp;
+		tail->next = nullptr;
+		--size;
+	}
+
+	void insert_after(int nval,Node *node)
+	{
+		Node *temp = new Node(nval);
+		temp->next = node->next;
+		temp->previous = node;
+		node->next = temp;
+		if (temp->next == nullptr)
+		{
+			tail = temp;
+		}
+		++size;
+	}
+
+	void erase(Node *node)
+	{   
+		if (node->next == nullptr && node->previous == nullptr)
+		{
+			delete node;
+			head = nullptr;
+			tail = nullptr;
+			--size;
+			return;
+		}
+
+		else if (node == tail)
+		{
+			Node*temp = node;
+			tail = tail->previous;
+			delete temp;
+			tail->next = nullptr;
+			--size;
+			return;
+		}
+		Node*temp = node;
+		temp->next->previous = temp->previous;
+		temp->previous->next = temp->next;
+		delete temp;
+		--size;
+	}
+    private:
+		int size;
+		Node *head;
+		Node *tail;
+};
